@@ -1,0 +1,127 @@
+<template>
+  <div class="modal-backdrop">
+    <div class="modal-content modal-lg modal-dialog-centered">
+      <div class="modal-header">
+        <h5 class="modal-title">Invoice Details</h5>
+        <button type="button" class="btn-close" @click="closeModal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="container-fluid">
+          <!-- First Row: Billed To and Invoice Info -->
+          <div class="row">
+            <!-- Billed To Section -->
+            <div class="col-8">
+              <strong>BILLED TO</strong>
+              <p class="mb-1">Name: <span>{{ customer.customer.name }}</span></p>
+              <p class="mb-1">Name: <span>{{ customer.customer.email }}</span></p>
+              <p class="mb-1">Customer ID: <span>{{ customer.customer.id }}</span></p>
+              <p class="mb-1">Phone: <span>{{ customer.customer.mobile }}</span></p>
+            </div>
+            <!-- Invoice Info Section -->
+            <div class="col-4 text-right">
+              <img class="w-40" src="../../Assets/img/logo.svg" alt="Company Logo">
+              <p class="mb-1"><strong>Invoice</strong></p>
+              <p class="mb-1">Date: {{ new Date().toLocaleDateString() }}</p>
+            </div>
+          </div>
+
+          <hr class="my-2">
+
+          <!-- Second Row: Invoice Items -->
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Sale Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in customer.invoice_product" :key="index">
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.qty }}</td>
+                    <td>{{ item.sale_price }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <hr class="my-2">
+
+          <!-- Third Row: Totals -->
+          <div class="row">
+            <div class="col-12">
+              <p><strong>Total:</strong> {{ customer.total }}</p>
+              <p><strong>Payable:</strong> {{ customer.payable }}</p>
+              <!-- <p><strong>VAT (5%):</strong> {{ customer.vat }}</p>
+              <p><strong>Discount:</strong> {{ customer.discount }}</p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" @click="closeModal">Close</button>
+        <button class="btn btn-primary" @click="printInvoice">Print</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+
+// Props to receive customer data from the parent component
+const props = defineProps({
+  customer: Object
+});
+
+// Emits to notify the parent when the modal is closed
+const emit = defineEmits(['close']);
+
+// Close Modal Function
+const closeModal = () => {
+  emit('close');
+};
+
+// Print Invoice Function
+const printInvoice = () => {
+  window.print(); // Print the current modal contents
+};
+</script>
+
+<style scoped>
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Bootstrap modal z-index */
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%; /* Make the modal larger like Bootstrap's modal-lg */
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+}
+</style>
