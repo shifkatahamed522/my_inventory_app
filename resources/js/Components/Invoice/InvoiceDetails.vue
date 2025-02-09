@@ -99,13 +99,13 @@ const printInvoice = () => {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1050; /* Bootstrap modal z-index */
+  z-index: 1500; /* Bootstrap modal z-index */
 }
 
 .modal-content {
@@ -113,6 +113,13 @@ const printInvoice = () => {
   padding: 20px;
   border-radius: 10px;
   width: 80%; /* Make the modal larger like Bootstrap's modal-lg */
+  max-height: 90vh; /* Limit the height of the modal */
+  overflow-y: auto; /* Enable scrolling inside the modal if content exceeds height */
+}
+
+.modal-body {
+  max-height: 60vh; /* Limit the height of the modal body */
+  overflow-y: auto; /* Enable scrolling inside the modal body */
 }
 
 .w-40 {
